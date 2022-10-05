@@ -10,18 +10,11 @@ Base = declarative_base ()
 class User(Base):
     __tablename__ = 'users'
     id = Column (Integer, primary_key = True)
+    username = Column(String(100), unique=True, nullable=False)
     firstname = Column (String(30), nullable=False) 
     lastname = Column (String(30), nullable=False) 
     email = Column (String(50), nullable=False) 
     password = Column (String(10), nullable=False) 
-
-class Favorite (Base):
-    __tablename__ = 'favorites'
-    id = Column(Integer, primary_key=True)
-    users_id = Column(Integer, ForeignKey('users.id'))
-    characters_id = Column(Integer, ForeignKey('characters.id'))
-    planets_id = Column(Integer, ForeignKey('planets.id'))
-    user = relationship('User')
 
 class Planet(Base):
     __tablename__ = 'planets'
@@ -45,5 +38,19 @@ class Character(Base):
     species = Column (String(50), nullable=False) 
     starships = Column (String(50), nullable=False) 
     role_by = Column (String(50), nullable=False) 
+
+class FavoriteCharacter(Base):
+    __tablename__= 'favoritecharacters'
+    id = Column(Integer, primary_key=True)
+    users_id = Column(Integer, ForeignKey('users.id'))
+    characters_id = Column(Integer, ForeignKey('characters.id'))
+    user = relationship('User')
+
+class FavoritePlanet(Base):
+    __tablename__= 'favoriteplanets'
+    id = Column(Integer, primary_key=True)
+    users_id = Column(Integer, ForeignKey('users.id'))
+    planets_id = Column(Integer, ForeignKey('planets.id'))
+    user = relationship('User')
 
 render_er(Base, 'diagram.png')
